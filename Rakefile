@@ -4,13 +4,13 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "awesome_print"
+    gem.name = "jonbell-awesome_print"
     gem.rubyforge_project = "awesome_print"
     gem.summary = %Q{Pretty print Ruby objects with proper indentation and colors.}
-    gem.description = %Q{Great Ruby dubugging companion: pretty print Ruby objects to visualize their structure. Supports Rails ActiveRecord objects via included mixin.}
-    gem.email = "mike@dvorkin.net"
-    gem.homepage = "http://github.com/michaeldv/awesome_print"
-    gem.authors = ["Michael Dvorkin"]
+    gem.description = %Q{Great Ruby dubugging companion: pretty print Ruby objects to visualize their structure. Supports MongoMapper objects via included mixin.}
+    gem.email = "jonbell@spamcop.net"
+    gem.homepage = "http://github.com/jonbell/awesome_print"
+    gem.authors = ["Michael Dvorkin", "Jonathan Bell"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.files = FileList["[A-Z]*", "lib/**/*.rb", "rails/*.rb", "spec/*", "init.rb"]
     gem.has_rdoc = false

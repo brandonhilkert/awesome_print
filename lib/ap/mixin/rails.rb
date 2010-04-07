@@ -14,22 +14,22 @@ module AwesomePrintRails
   def printable_with_rails(object)
     printable = printable_without_rails(object)
     if printable == :self
-      if object.is_a?(ActiveRecord::Base)
-        printable = :active_record_instance
+      if object.class.include?(MongoMapper::Document) || object.class.include?(MongoMapper::EmbeddedDocument)
+        printable = :mongo_mapper_instance
       elsif object.is_a?(ActiveSupport::TimeWithZone)
         printable = :active_support_time
       end
-    elsif printable == :class && object.class.is_a?(ActiveRecord::Base.class)
-      printable = :active_record_class
+    elsif printable == :class && (object.class.include?(MongoMapper::Document) || object.class.include?(MongoMapper::EmbeddedDocument))
+      printable = :mongo_mapper_class
     end
     printable
   end
 
   # Format ActiveRecord instance object.
   #------------------------------------------------------------------------------
-  def awesome_active_record_instance(object)
-    data = object.class.column_names.inject(ActiveSupport::OrderedHash.new) do |hash, name|
-      hash[name.to_sym] = object.send(name) if object.has_attribute?(name) || object.new_record?
+  def awesome_mongo_mapper_instance(object)
+    data = object.keys.keys.inject(ActiveSupport::OrderedHash.new) do |hash, name|
+      hash[name.to_sym] = object.send(name)
       hash
     end
     "#{object} " + awesome_hash(data)
@@ -37,16 +37,12 @@ module AwesomePrintRails
 
   # Format ActiveRecord class object.
   #------------------------------------------------------------------------------
-  def awesome_active_record_class(object)
-    if object.respond_to?(:columns)
-      data = object.columns.inject(ActiveSupport::OrderedHash.new) do |hash, c|
-        hash[c.name.to_sym] = c.type
-        hash
-      end
-      "class #{object} < #{object.superclass} " << awesome_hash(data)
-    else
-      object.inspect
+  def awesome_mongo_mapper_class(object)
+    data = object.keys.keys.inject(ActiveSupport::OrderedHash.new) do |hash, c|
+      hash[c] = object.keys[c].type
+      hash
     end
+    "class #{object} < #{object.superclass} " << awesome_hash(data)
   end
 
   # Format ActiveSupport::TimeWithZone as standard Time.
