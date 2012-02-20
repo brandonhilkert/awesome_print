@@ -114,7 +114,11 @@ class AwesomePrint
   # Catch all method to format an arbitrary object.
   #------------------------------------------------------------------------------
   def awesome_self(object, appear = {})
-    colorize(object.inspect << appear[:with].to_s, appear[:as] || declassify(object))
+    if object.inspect.nil?
+      colorize("---nothing---", declassify(object))
+    else
+      colorize(object.inspect << appear[:with].to_s, appear[:as] || declassify(object))
+    end
   end
 
   # Dispatcher that detects data nesting and invokes object-aware formatter.
