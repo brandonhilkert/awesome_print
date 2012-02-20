@@ -28,7 +28,7 @@ module AwesomePrintRails
   # Format ActiveRecord instance object.
   #------------------------------------------------------------------------------
   def awesome_mongo_mapper_instance(object)
-    data = object.keys.keys.inject(ActiveSupport::OrderedHash.new) do |hash, name|
+    data = object.keys.keys.sort.inject(ActiveSupport::OrderedHash.new) do |hash, name|
       hash[name.to_sym] = object.send(name)
       hash
     end
